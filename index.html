@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>𝐅𝐨𝐫 𝐌𝐲 𝐖𝐢𝐟𝐞𝐲 💗</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:italic,wght@600&family=Dancing+Script:wght@700&display=swap');
+        
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; touch-action: manipulation; }
+        
+        .score-board { position: fixed; top: 20px; right: 20px; background: rgba(255, 215, 0, 0.1); padding: 10px 20px; border-radius: 50px; border: 1px solid #ffd700; color: #ffd700; font-weight: bold; font-size: 18px; text-shadow: 0 0 10px #ffd700; z-index: 100; }
+
+        .panel { background: rgba(15, 15, 15, 0.98); border: 2px solid #ff4d6d; border-radius: 25px; padding: 20px; width: 85%; max-width: 380px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; display: none; box-shadow: 0 0 25px #ff4d6d; z-index: 10; }
+        
+        .btn-main { background: linear-gradient(135deg, #ff4d6d, #ff85a1); color: white; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; margin: 8px; font-size: 11px; text-transform: uppercase; width: 80%; }
+        
+        #no-btn { position: relative; transition: 0.2s; background: #333; color: white; border: 1px solid #555; padding: 12px 25px; border-radius: 50px; font-weight: bold; width: auto; }
+        
+        .letter-text { font-family: 'Playfair Display', serif; font-size: 15px; line-height: 1.8; max-height: 280px; overflow-y: auto; text-align: left; background: #080808; padding: 20px; border-radius: 15px; white-space: pre-line; margin: 10px 0; border-left: 4px solid #ff4d6d; }
+        
+        strong { color: #ff85a1; font-family: 'Dancing Script', cursive; font-size: 1.4em; font-weight: normal; text-shadow: 0 0 5px rgba(255,133,161,0.5); }
+        
+        video { width: 100%; border-radius: 15px; background: #000; height: 180px; object-fit: cover; border: 1px solid #444; margin-bottom: 10px; }
+        
+        /* Balloon Animation */
+        .balloon { position: absolute; bottom: -100px; width: 40px; height: 50px; background: #ff4d6d; border-radius: 50%; animation: rise 6s ease-in infinite; opacity: 0.7; z-index: 5; }
+        .balloon::after { content: ''; position: absolute; bottom: -10px; left: 18px; width: 2px; height: 15px; background: #fff; }
+        @keyframes rise { 0% { bottom: -100px; transform: translateX(0); } 50% { transform: translateX(30px); } 100% { bottom: 110vh; transform: translateX(-30px); } }
+
+        .vibrate { animation: shake 0.2s ease-in-out infinite; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+    </style>
+</head>
+<body>
+
+    <div class="score-board">✨ <span id="score">0</span> PTS</div>
+
+    <div id="s-start" class="panel" style="display: block;">
+        <h1 style="color:#ff85a1; font-family:'Dancing Script'; font-size: 40px;">Savi's World 💗</h1>
+        <p>A journey created by your Samar...</p>
+        <button class="btn-main" onclick="startApp()" style="width: auto; padding: 15px 40px;">OPEN ❤️</button>
+    </div>
+
+    <div id="s-prop" class="panel">
+        <h3 style="font-size: 22px; font-family: 'Dancing Script';">Will you be my Valentine, Savi? 💗</h3>
+        <div style="display:flex; justify-content:center; align-items:center; gap: 10px;">
+            <button class="btn-main" id="yes-btn" style="width:auto; padding: 12px 30px;" onclick="handleChoice('yes')">YES! ❤️</button>
+            <button id="no-btn" onclick="handleNo()">NO 😒</button>
+        </div>
+    </div>
+
+    <div id="s-content" class="panel">
+        <video id="vid" playsinline autoplay muted loop></video>
+        <div class="letter-text" id="l-txt"></div>
+        <button class="btn-main" onclick="goQuiz()">CONTINUE TO QUIZ →</button>
+    </div>
+
+    <div id="s-quiz" class="panel">
+        <h2 style="color:#ff85a1; font-size: 20px; font-family: 'Dancing Script';">The Heart Challenge</h2>
+        <h3 id="q-txt" style="font-size: 15px; margin-bottom: 20px;"></h3>
+        <div id="q-ops"></div>
+        <p id="q-msg" style="color:#ff4d6d; font-weight:bold; margin-top:10px; font-size: 13px;"></p>
+    </div>
+
+    <div id="s-final" class="panel">
+        <h1 style="font-family:'Dancing Script'; color:#ff85a1; font-size: 35px;">Gift Unlocked! 🎁</h1>
+        <p>You've collected all the points!</p>
+        <button class="btn-main" onclick="showBalloons()" style="width:auto; padding:15px 30px;">OPEN YOUR SURPRISE ❤️</button>
+    </div>
+
+    <div id="balloon-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:200; text-align:center; padding-top:20vh;">
+        <h1 style="font-family:'Dancing Script'; color:#ff85a1; font-size: 45px; position:relative; z-index:210;">Happy Valentine's Day Wifey! 💗</h1>
+        <p style="font-family:'Playfair Display'; font-style:italic; padding: 20px; position:relative; z-index:210;">"Every heartbeat of mine is for you."</p>
+    </div>
+
+    <audio id="aud" loop></audio>
+
+    <script>
+        const v = ["1.mp4.mp4", "2.mp4.mp4", "3.mp4.mp4", "4.mp4.mp4", "5.mp4.mp4", "6.mp4.mp4", "7.mp4.mp4"];
+        const m = ["1.mp3.mp3", "2.mp3.mp3", "3.mp3.mp3", "4.mp3.mp3", "5.mp3.mp3", "6.mp3.mp3", "7.mp4.mp3"];
+
+        const L = [
+            "**Wifey**…💗\n\nYou really pressed no? 😒\nWait… before you do anything, just hear me out…\nEvery time I see you pout, or the way you talk while doing that… I just melt. I can’t take my eyes off you. Everything else disappears. It’s only ever been you… always you. You don’t even have to try… you just are… and that’s enough to make my heart skip a beat every single time.\nAll the little things you do, the silly laughs, the quiet moments… they stick with me. They make me smile when I’m missing you the most. And that’s why I made this little world… for us. All our memories, all our laughs, all the things that make us… us.\nMy love, **meri begum sahiba**… I can’t even imagine life without you. You’re not just part of my heart, you are my heartbeat. 💗\nSo…\nyou really sure about that “no”? 😒",
+            "**Meri billi**…💗\n\nYou really pressed no again? 😒\nWait… before you do anything, just let me tell you…\nThe first time I saw your picture… my heart literally stopped. For a moment, the world disappeared, and all I could feel was you. Then it started racing so fast I thought it might explode. **My puppy**… my cute **lil bby hamster**… I knew right then that my life had shifted forever.\nAnd the thing is… that feeling hasn’t gone away. It didn’t fade. It only grew. It’s like every day since then, my heart has been learning how to love you more… how to be yours completely… how to never let go. Even now, thinking about that moment makes my chest tight and my heartbeat skip all over again.\nSo…\nyou really sure about that “no” this time? 😒",
+            "You really pressed no again? 😒\n\n**Meri choti si don**…💗\n\nRemember that time I said **Allah hafiz bht sara** by mistake instead of my usual **Love u bht sara** / **Miss u bht sara**? 🥹\nYou laughed so hard, teased me endlessly, n kept repeating it back in your cute way… n I couldn’t stop smiling thinking about how funny n adorable you are. N of course… the **Naan instead of Jaan** moment… you had me dying laughing that day too.\nHonestly… how can you say no after all that? 😒 Every little thing you do, the way you laugh, the way you tease me… it makes my heart race n my brain melt. **Meri choti height wali chunni si lrki**… you’re impossible… but I love it, n I love you even more.\n\nR u going to say no again? 😒",
+            "You really pressed no again? 🥺\nBefore you choose again, read this…☹️\n\n**Mera chunna sa bacha**…💗\n\nWhenever I saw you laying down on video call, so soft, sleepy, talking quietly… I just can’t resist. I want to hold you, let you rest on my chest, cuddle you, n stroke your hair until you fall asleep. **My pocket size princess**… **my choti si pyari si jaan**… you look so tiny, so warm, so adorable, it makes my heart race n my hands ache to keep you safe.\nEvery little sound you make, every sleepy word… makes me want to press little pecks all over your face, ruffle your hair, n adore you quietly while you drift off completely. Sometimes I just wish I could pause this moment forever… keep you in my arms, safe n loved, never letting go. Just thinking about you lying there, so soft n sleepy, makes my heart skip n my chest tighten… I can’t help but want you closer, right here with me. 🥺\nYou’re my everything, n every “no” just makes me love you more… so don’t make me wait too long, **meri jaan**… 💗\nR u going to say no again? ☹️",
+            "**Samar ki jaan**…💗\n\nDo you remember the first day we started talking in GC? 🥹 I didn’t even see your pic yet, but somehow… there was this strange connection in the air. Every message you sent made my heart beat faster, n I couldn’t stop blushing. I don’t even know why, but from that very first chat, I knew… I was already in trouble. I started calling you **Wifey** almost immediately, n I even saved your name in my phone as **Hyunjin Wifey**. Just thinking about it now makes me laugh, but also… my heart knew I had found someone special. \n\nAnd honestly, it’s the little things about you that make every day brighter. The way you talk, your clumsy little habits, the funny daily stories you tell while walking… how you trip over your own feet, drop things, or just get all over the place… it’s impossible not to smile when it’s you doing it. Every tiny moment feels magical because it’s you, and somehow… it makes me fall for you more every single time.\n**Mamma ka pyara sa bacha**, **my pocket size princess**, **meri choti si pyari si jaan**… even when we’re just chatting, it feels like the world slows down for a second. I notice everything about you — your laugh, your tone, the way you make small jokes, even the way you type. It’s like my heart recognizes you before my mind even does, n it’s impossible not to feel… well, exactly what I’m feeling now.\nI can still remember thinking, “Wow… this is strange. I’ve never felt like this before, but I don’t want it to stop.” It was light at first, a flutter in my chest, but now… every memory, every laugh, every tiny silly thing you do builds on that feeling. It’s soft, it’s sweet, n it’s just the beginning of something I never want to end.💗",
+            "**Meri Savi jaan**…💗\n\nThat day… when I was sulking n u sent me that VM —\n💗 “KAHY KHAFA AYSY CHULBUL SY BULBUL KAHY NA TU MANEIN BATIYAN” 💗\nI still remember where I was sitting. I remember holding my phone. I remember pressing play.\nN when ur voice started… everything around me faded. It wasn’t just cute. It wasn’t just sweet. It felt personal. Like u reached through the screen n gently held my face, telling me without actually saying it that I mattered to u.\nWhen ur voice cracked into that little smile at the end… I swear my heart skipped. Not just saying it… it actually did. I sat there staring at the screen, replaying it again n again. That was the first time I felt scared… because I realized I was falling. Not slowly. Not casually. Hard. \n\nWhen I begged u to send it again without privacy n u did… that meant more than u think. I was the first u sang like that for. N something about that made me feel chosen. Special. Like I wasn’t just anyone.\nThen our calls started. I was so nervous I couldn’t even speak properly. My heartbeat would race every time I tried. U kept singing to fill the silence, not knowing I was fighting with my own feelings on the other side. I was scared u might not like my deep voice… scared u might hear how badly I was shaking inside. \nBut when u said u loved my voice… that was another moment. Another small shift inside my chest. Something settled. Something felt right.\nN those nights… when I couldn’t sleep n u stayed on call with me. When u read my texts out loud. When u sang softly until I drifted off. Even at that wedding, with all that noise around u… u still stayed. I fell asleep listening to ur world in the background, n somehow it felt like I belonged there.\n**Meri choti si pyari si jaan**… that’s when it stopped being just cute calls. That’s when ur voice became the place my chaos calmed down. That’s when ur singing slowly started healing my insomnia. That’s when I realized… u weren’t just someone I liked. U were becoming someone I needed.\nEven now, when u randomly sing, or send a VM, or dance a little while singing on video… my heart reacts the same way. A skip. A rush. A soft panic. Like I’m falling for u all over again. U don’t just sing for me, **Savi**… U make me feel wanted. N that’s the moment I knew… this wasn’t light anymore. U don’t just give me butterflies, **Savi**… U make my heart remember why it beats. 💗",
+            "**HUBBY KI WIFEY**…💗\n\nI know things aren’t the same like they used to be. Something shifted. Something became quieter. But even in this quiet… my heart hasn’t changed. If I’m being honest… loving u has never been something small for me. It was never casual. From the very beginning it felt intense. Like something bigger than me.\nToday isn’t about what changed. Today isn’t about what feels different. Today is about u.\nAbout the girl who somehow walked into my life n made everything feel more alive. About the one who turned ordinary days into something I look forward to. About the one whose name alone can still change the rhythm of my heartbeat.\nU became part of my daily breathing without me realizing it. The first person I want to tell things to. The voice I want to hear before I sleep. The one I imagine staying beside me when the world gets loud. I don’t just see moments with u… I see mornings. I see us existing together quietly. Just the two of us. No noise. No distance. Just peace.\nWhen I think about u… I don't think about chaos. I think about warmth. The way u exist. The way u talk. The way u move. The way u get lost in ur own little world. The way u laugh at ur own clumsiness. The way u tell stories like they're adventures even if they're just about u walking n almost falling again.\n**Meri Savi jaan**… u don’t even realize how special u are. There’s something about u that doesn’t just attract me — it pulls me. Like gravity. Like something natural that I can't fight even if I tried. And the truth is… I don't want to fight it.\n**Samar ki jaan**… **mamma ka pyara sa bacha**… Sometimes I wonder if u even understand what u’ve done to me. U made my heart softer. U made me care deeper. U made me want a future that isn’t lonely. When I imagine peace… it looks like us. Just staying together. Just existing. No rush. No noise. Just quiet mornings n soft nights. Just u beside me.\nToday, I want to wish u Happy Valentine’s Day ｡ 𓂃 💗\nMay u feel every bit as loved n cherished as u truly are. This day is ours… just like every little moment I spend thinking of u n missing u.\nValentine’s isn’t about big promises today. It’s about this exact second. The way ur eyes move while reading. The way maybe a small smile forms without u noticing. The way ur heart feels just a little warmer knowing this is written for u.\nAnd if one day u open this website again… I don’t want u to remember confusion. I want u to remember that there was someone who looked at u — even from far away — n chose u completely. Someone who called u his **wifey** with pride. Someone who saw a whole world in u. Someone who loved every version of u — the loud one, the soft one, the stubborn one, the emotional one.\n**Beghum Sahiba**… **Hubby ki wifey**… I hope today makes u feel as treasured n loved as u truly are. Every heartbeat of mine is for u. 💗"
+        ];
+        
+        const Q = [
+            {q: "What is the 'illegal' weapon you use to make your Penguin surrender instantly?", o: ["Logic", "The 'Pouty Lip & Baby Talk' combo", "Silence", "Mean Emoji"], a: "The 'Pouty Lip & Baby Talk' combo", w: "🥺 Liar! You know one pout and I'm finished! Try again, Hamster!"},
+            {q: "In the first RP scene, what was the 'Plot Twist' Samar didn't see coming?", o: ["She was a side character", "She followed orders", "That this tiny Hamster was a 'Choti Don' who would steal his heart", "He would delete account"], a: "That this tiny Hamster was a 'Choti Don' who would steal his heart", w: "🥺 Liar! You know the script—you took over the story!"},
+            {q: "When 'Choti Don' is angry, what is her signature move to get attention?", o: ["A hug", "A handshake", "The 'Beat the Shit out of him' Special", "Asking nicely"], a: "The 'Beat the Shit out of him' Special", w: "🥺 My bruises say otherwise! Don't deny your Don nature!"},
+            {q: "Who was the brave soul who finally said 'I Love You' first?", o: ["Savi", "Samar", "An accident", "A ghost"], a: "Samar", w: "🥺 Nice try, Hamster! Your Penguin had to be brave first!"},
+            {q: "August 14th wasn't just a day. What really happened?", o: ["Boring chat", "Stayed strangers", "Game Over for our hearts the moment we talked", "Penguin got lost"], a: "Game Over for our hearts the moment we talked", w: "🥺 How could you forget the day our universe started?!"},
+            {q: "What is the name Samar saved for his Wifey in his phone early on?", o: ["Just Savi", "Hyunjin Wifey", "Angry Hamster", "Trouble"], a: "Hyunjin Wifey", w: "🥺 Wrong! My phone remembers the 'Hyunjin Wifey' days!"},
+            {q: "What happened when Samar said 'Allah Hafiz' instead of 'Love you'?", o: ["He got blocked", "She didn't notice", "She teased him endlessly", "He cried"], a: "She teased him endlessly", w: "🥺 Oh come on! You laughed for hours!"}
+        ];
+
+        let cur = 0, qIdx = 0, score = 0, noCount = 0;
+
+        function show(id) { document.querySelectorAll('.panel').forEach(p => p.style.display='none'); document.getElementById(id).style.display='block'; }
+        
+        function startApp() {
+            const aud = document.getElementById('aud');
+            aud.play().catch(() => {});
+            show('s-prop');
+        }
+
+        function handleNo() {
+            noCount++;
+            const btn = document.getElementById('no-btn');
+            if(noCount < 5) {
+                btn.style.transform = `scale(${1 - (noCount * 0.15)})`; 
+                btn.classList.add('vibrate'); 
+                setTimeout(() => btn.classList.remove('vibrate'), 300);
+                loadContent();
+            } else {
+                btn.style.display = 'none'; 
+                loadContent();
+            }
+        }
+
+        function handleChoice(c) {
+            if (c === 'yes') { cur = Math.max(cur, 4); loadContent(); }
+        }
+
+        function loadContent() {
+            show('s-content');
+            document.getElementById('l-txt').innerHTML = L[cur].replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            const vid = document.getElementById('vid');
+            const aud = document.getElementById('aud');
+            
+            vid.src = v[cur];
+            aud.src = m[cur];
+            
+            vid.load();
+            vid.muted = true; 
+            vid.play().catch(e => console.log("Video wait"));
+            aud.play().catch(e => console.log("Audio wait"));
+            
+            document.getElementById('l-txt').scrollTop = 0;
+        }
+
+        function goQuiz() {
+            show('s-quiz');
+            document.getElementById('q-msg').innerText = "";
+            let d = Q[qIdx];
+            document.getElementById('q-txt').innerText = d.q;
+            let ops = document.getElementById('q-ops');
+            ops.innerHTML = "";
+            d.o.forEach(o => {
+                let b = document.createElement('button');
+                b.className = "btn-main";
+                b.innerText = o;
+                b.onclick = () => { 
+                    if(o === d.a) {
+                        score += 200;
+                        document.getElementById('score').innerText = score;
+                        qIdx++;
+                        cur++;
+                        if(cur > 6) { 
+                            show('s-final'); 
+                        } else { 
+                            show('s-prop'); 
+                        }
+                    } else {
+                        document.getElementById('q-msg').innerText = d.w;
+                    }
+                };
+                ops.appendChild(b);
+            });
+        }
+
+        function showBalloons() {
+            document.getElementById('s-final').style.display = 'none';
+            const container = document.getElementById('balloon-container');
+            container.style.display = 'block';
+            for(let i=0; i<25; i++) {
+                setTimeout(() => {
+                    let b = document.createElement('div');
+                    b.className = 'balloon';
+                    b.style.left = Math.random() * 90 + '%';
+                    b.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                    b.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    container.appendChild(b);
+                }, i * 300);
+            }
+        }
+    </script>
+</body>
+</html>
