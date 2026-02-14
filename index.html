@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>𝐅𝐨𝐫 𝐌𝐲 𝐖𝐢𝐟𝐞𝐲 💗</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:italic,wght@600&family=Dancing+Script:wght@700&display=swap');
+        
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Montserrat', sans-serif; background: #000; color: white; overflow: hidden; }
+        
+        /* Preloader */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .heart-loader { color: #ff4d6d; font-size: 50px; animation: beat 1s infinite; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+        .score-board { position: fixed; top: 15px; right: 15px; background: rgba(255, 215, 0, 0.15); padding: 8px 15px; border-radius: 50px; border: 1px solid #ffd700; color: #ffd700; font-weight: bold; font-size: 14px; z-index: 1000; }
+
+        .panel { display: none; width: 85%; max-width: 400px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; padding: 20px; border-radius: 25px; background: rgba(15,15,15,0.98); border: 2px solid #ff4d6d; box-shadow: 0 0 25px #ff4d6d; }
+        
+        .btn-main { background: linear-gradient(135deg, #ff4d6d, #ff85a1); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 700; margin: 10px; font-size: 13px; text-transform: uppercase; width: 85%; }
+        
+        #no-btn { transition: 0.2s; background: #333; color: white; border: 1px solid #555; padding: 10px 20px; border-radius: 50px; }
+
+        .letter-text { font-family: 'Playfair Display', serif; font-size: 15px; line-height: 1.7; max-height: 300px; overflow-y: auto; text-align: left; padding: 15px; white-space: pre-line; border-left: 3px solid #ff4d6d; margin: 15px 0; background: #0a0a0a; border-radius: 10px; }
+        
+        strong { color: #ff85a1; font-family: 'Dancing Script', cursive; font-size: 1.3em; }
+        
+        #s-video { width: 100%; height: 100%; background: #000; position: fixed; top: 0; left: 0; z-index: 500; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        video { width: 95%; max-height: 75%; border-radius: 10px; }
+
+        .balloon { position: absolute; bottom: -100px; width: 40px; height: 50px; border-radius: 50%; animation: rise 6s linear infinite; opacity: 0.7; }
+        @keyframes rise { 0% { bottom: -100px; transform: translateX(0); } 100% { bottom: 120vh; transform: translateX(20px); } }
+
+        input { background: #1a1a1a; border: 1px solid #ff4d6d; color: white; padding: 12px; border-radius: 10px; width: 80%; text-align: center; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="loader"><div class="heart-loader">❤️</div><p>Preparing a memory...</p></div>
+    <div class="score-board">✨ <span id="score">0</span> PTS</div>
+
+    <div id="s-entry" class="panel" style="display: block;">
+        <h1 style="font-family:'Dancing Script'; color:#ff85a1;">Welcome to Savi's World</h1>
+        <input type="text" id="code-input" placeholder="Enter Secret Code">
+        <button class="btn-main" onclick="checkCode()">Enter 💗</button>
+        <p id="entry-msg"></p>
+    </div>
+
+    <div id="s-prop" class="panel">
+        <h3 id="prop-title" style="font-family: 'Dancing Script'; font-size: 24px;">Will you be my Valentine, Savi? 💗</h3>
+        <button class="btn-main" id="yes-btn" onclick="preLoadStage()">YES! ❤️</button>
+        <button id="no-btn" onclick="handleNo()">NO 😒</button>
+    </div>
+
+    <div id="s-letter" class="panel">
+        <div class="letter-text" id="l-txt"></div>
+        <button class="btn-main" onclick="goToVideo()">Watch Memory →</button>
+    </div>
+
+    <div id="s-video">
+        <video id="vid" controls playsinline></video>
+        <button class="btn-main" style="margin-top:20px;" onclick="show('s-quiz')">Go to Quiz →</button>
+    </div>
+
+    <div id="s-quiz" class="panel">
+        <h2 style="color:#ff85a1; font-family:'Dancing Script';">Quick Quiz</h2>
+        <p id="q-txt"></p>
+        <div id="q-ops"></div>
+        <p id="q-msg"></p>
+    </div>
+
+    <div id="s-final" style="display:none; width:100%; height:100%; background:#000; position:fixed; top:0; left:0; z-index:2000; text-align:center; padding-top:15vh;">
+        <h1 style="font-family:'Dancing Script'; color:#ff85a1; font-size: 40px;">Happy Valentine's Day Wifey! 💗</h1>
+        <p style="font-style:italic;">You scored full points!</p>
+        <button class="btn-main" onclick="claimReward()">Claim Your Chocolate Reward 🍫</button>
+        <div id="balloon-box"></div>
+    </div>
+
+    <audio id="aud" loop></audio>
+
+    <script>
+        // Content Arrays (same as before)
+        const v = ["1.mp4.mp4", "2.mp4.mp4", "3.mp4.mp4", "4.mp4.mp4", "5.mp4.mp4", "6.mp4.mp4", "7.mp4.mp4"];
+        const m = ["1.mp3.mp3", "2.mp3.mp3", "3.mp3.mp3", "4.mp3.mp3", "5.mp3.mp3", "6.mp3.mp3", "7.mp4.mp3"];
+        const L = [ /* ... Add the 7 letters here from previous prompt ... */ ];
+        const Q = [ /* ... Add the 8 quiz objects here from previous prompt ... */ ];
+
+        let stage = 0, noCount = 0, score = 0;
+
+        function show(id) {
+            document.querySelectorAll('.panel, #s-video, #s-final').forEach(p => p.style.display = 'none');
+            const el = document.getElementById(id);
+            el.style.display = (id === 's-video' ? 'flex' : 'block');
+        }
+
+        function checkCode() {
+            let val = document.getElementById('code-input').value.toLowerCase();
+            if(["savi", "wifey", "don"].includes(val)) show('s-prop');
+            else document.getElementById('entry-msg').innerText = "Wrong! Try again, Hamster! 😒";
+        }
+
+        function preLoadStage() {
+            document.getElementById('loader').style.display = 'flex';
+            const audio = document.getElementById('aud');
+            const video = document.getElementById('vid');
+            audio.src = m[stage];
+            video.src = v[stage];
+            
+            // Wait for both to be ready
+            let loaded = 0;
+            const check = () => {
+                loaded++;
+                if(loaded === 2) {
+                    document.getElementById('loader').style.display = 'none';
+                    goToLetter();
+                }
+            };
+            audio.oncanplaythrough = check;
+            video.oncanplaythrough = check;
+            
+            // Backup timeout in case of slow network
+            setTimeout(() => { if(loaded < 2) check(); }, 5000);
+        }
+
+        function goToLetter() {
+            show('s-letter');
+            document.getElementById('l-txt').innerHTML = L[stage].replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            document.getElementById('aud').play();
+        }
+
+        function goToVideo() {
+            document.getElementById('aud').pause();
+            show('s-video');
+            document.getElementById('vid').play();
+        }
+
+        function claimReward() {
+            const msg = encodeURIComponent("I did it! I finished Savi's World and got full points! Now where is my chocolate reward, Hubby? 🍫💗");
+            window.location.href = `https://wa.me/YOUR_PHONE_NUMBER?text=${msg}`; 
+        }
+
+        function showFinal() {
+            show('s-final');
+            const box = document.getElementById('balloon-box');
+            for(let i=0; i<40; i++) {
+                let b = document.createElement('div');
+                b.className = 'balloon';
+                b.style.left = Math.random() * 100 + 'vw';
+                b.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                b.style.animationDelay = (Math.random() * 5) + 's';
+                box.appendChild(b);
+            }
+        }
+        
+        // ... include previous logic for handleNo and quiz mechanics ...
+    </script>
+</body>
+</html>
